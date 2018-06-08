@@ -42,11 +42,11 @@ def hyperparameter_new(prod, den2, i, h, s):
 c = 7
 p = 18
 
-euc_distance = euclidean_distances(complete_view)
+euc_distance = euclidean_distances(complete_view) ** 2
 
 percentile_10 = np.percentile(euc_distance, 10)
 percentile_90 = np.percentile(euc_distance, 90)
-sigma_2 = (percentile_10 + percentile_90) / 2
+sigma_2 = (percentile_10 + percentile_90) / 2 # tril_indices numpy
 gama = (1 / sigma_2) ** p
 hyperparameter_vector = np.ones((p,)) * (gama ** (1 / p))
 

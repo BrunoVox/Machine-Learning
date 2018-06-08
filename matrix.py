@@ -58,7 +58,7 @@ objmatrix = objmatrix.astype(float)
 # print(type(objmatrix[0,0]))
 # print(objmatrix[0,0])
 
-complete_view = np.matrix(normalize(objmatrix))
+complete_view = np.matrix((objmatrix))
 
 shape_view = np.matrix(matrix)[:,1:9]
 

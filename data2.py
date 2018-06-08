@@ -168,8 +168,8 @@ for train_index, test_index in rskf.split(objmatrix, lmatrix):
             #             kfold_result5[train_index[i],j] = "PATH"
 
     # VALIDAÇÃO
-    for i in range(0, 420):
-        for h in range([0.2, 0.6, 1, 1.4, 1.8]):
+    # for i in range(0, 420):
+    #     for h in range([0.2, 0.6, 1, 1.4, 1.8]):
 
 
     
