@@ -14,17 +14,17 @@ def kernel_gh(inv_s, xk, gi, linha, linha_g):
     k_gh = np.exp(-0.5 * somatorio)
     return k_gh
 
-def prototype_new(num, den, part_number):
-    temp_part = clusters[:, part_number]
-    num = 0
-    den = 0
-    for i in range(0, len(temp_part)):
-        if temp_part[i] == -1:
-            break
-        num += kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, int(temp_part[i]), part_number) * complete_view[int(temp_part[i]), :]
-        den += kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, int(temp_part[i]), part_number)
-    # new_prototype = num / den
-    return num, den
+def prototype_new():
+    num = np.zeros((c,))
+    den = np.zeros((c,))
+    proto_result = np.zeros((c,))
+    for j in range(c):
+        for i in range(len(clusters)):
+            if j == clusters[i]:
+                num[j] += kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, clusters[i]) * complete_view[i, :]
+                den[j] += kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, clusters[i])
+        proto_result[j] = num[j] / den[j]
+    return proto_result
 
 def hyperparameter_new(prod, den2, i, h, s):
     temp_part = clusters[:, i]
@@ -51,28 +51,21 @@ gama = (1 / sigma_2) ** p
 hyperparameter_vector = np.ones((p,)) * (gama ** (1 / p))
 
 prototypes_vector = generate_random_prototypes(index_matrix)
-prototypes_matrix = np.zeros((7, p))
+prototypes_matrix = np.zeros((c, p))
 
-for i in range(0, len(prototypes_vector)):
-    for j in range(0, p):
+for i in range(len(prototypes_vector)):
+    for j in range(p):
         prototypes_matrix[i, j] = complete_view[int(prototypes_vector[i]), j]
 # print(prototypes_matrix)
-clusters = np.ones((2100, 7)) * (-1)
-clusters_old = np.ones((2100, 7)) * (-1)
-
+clusters = np.zeros((2100,))
 
 factor_list = np.ravel(np.zeros((7,1)))
 
-for i in range(0, len(complete_view)):
-    for j in range(0, len(prototypes_matrix)):
-        # print(kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
+for i in range(len(complete_view)):
+    for j in range(len(prototypes_matrix)):
         factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
     factor_min = np.argmin(factor_list)
-    # print(factor_min)
-    for m in range(0, len(clusters)):
-        if clusters[m, factor_min] == -1:
-            clusters[m, factor_min] = i
-            break
+    clusters[i] = factor_min
 print(clusters)
 # PARTE FINAL DO ALGORITMO
 
@@ -80,13 +73,10 @@ test_sum = 1
 old_hyperparameter_vector = 0
 # print(hyperparameter_vector)
 while test_sum != 0:
-    numerator = 0
-    denominator = 0
-    for i in range(0, c):
-        numerator += prototype_new(numerator, denominator, i)[0]
-        denominator += prototype_new(numerator, denominator, i)[1]
-        for j in range(0, p):
-            prototypes_matrix[i, j] = numerator[0, j] / denominator
+    result_prototype_new = prototype_new()
+    
+    for i in range(c):
+        prototypes_matrix[i] = result_prototype_new[i]
     # print(prototypes_matrix)
     # CÁLCULO DO HIPERPARÂMETRO
     produtorio = np.ravel(np.zeros((18, 1)))
@@ -96,8 +86,9 @@ while test_sum != 0:
         print(s, "/ 18")
         for h in range(0, p):
             for i in range(0, c):
-                produtorio[h] += hyperparameter_new(produtorio, denominator2, i, h, s)[0]
-                denominator2[s] += hyperparameter_new(produtorio, denominator2, i, h, s)[1]
+                hp_temp = hyperparameter_new(produtorio, denominator2, i, h, s)
+                produtorio[h] += hp_temp[0]
+                denominator2[s] += hp_temp[1]
                 
         if s == 0:
             result_prod = 1
@@ -113,17 +104,18 @@ while test_sum != 0:
     # old_hyperparameter_vector = hyperparameter_vector
     # if test_sum == 0:
     # print(hyperparameter_vector)
-    clusters_old = clusters
 
-    for i in range(0, len(complete_view)):
-        for j in range(0, len(prototypes_matrix)):
-            # print(kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
-            factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
-        factor_min = np.argmin(factor_list)
-        for m in range(0, len(clusters)):
-            if clusters[m, factor_min] == -1:
-                clusters[m, factor_min] = i
-                break
+    
+
+    # for i in range(0, len(complete_view)):
+    #     for j in range(0, len(prototypes_matrix)):
+    #         # print(kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
+    #         factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
+    #     factor_min = np.argmin(factor_list)
+    #     for m in range(0, len(clusters)):
+    #         if clusters[m, factor_min] == -1:
+    #             clusters[m, factor_min] = i
+    #             break
     # count = 0
     # for j in range(0, c):
     #     for i in range(0, len(clusters)):
