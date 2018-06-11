@@ -3,6 +3,6 @@ import numpy as np
 
 a = np.matrix([[1,1],[1,1]])
 b = np.matrix([[1,1],[1,2]])
-
-if a.all() == b.all():
-    print("ok")
+c = np.zeros(7,).tolist()
+c[0] = a[0].tolist()
+print(c)
