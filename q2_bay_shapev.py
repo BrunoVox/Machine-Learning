@@ -14,6 +14,9 @@ for i in range(2100):
             kfold_result[i,j] = ""
 
 # MULTIVARIATE NORMAL DENSITY
+partial_result = []
+
+p = 6
 
 j = -1
 
@@ -21,20 +24,20 @@ for train_index, test_index in rskf.split(shape_view, lmatrix):
     
     j += 1
     
-    mean_vector_grass = np.zeros((1, 8))
-    mean_vector_window = np.zeros((1, 8))
-    mean_vector_cement = np.zeros((1, 8))
-    mean_vector_brickface = np.zeros((1, 8))
-    mean_vector_sky = np.zeros((1, 8))
-    mean_vector_foliage = np.zeros((1, 8))
-    mean_vector_path = np.zeros((1, 8))
-    covar_grass = np.identity((8))
-    covar_window = np.identity((8))
-    covar_cement = np.identity((8))
-    covar_brickface = np.identity((8))
-    covar_sky = np.identity((8))
-    covar_foliage = np.identity((8))
-    covar_path = np.identity((8))
+    mean_vector_grass = np.zeros((1, p))
+    mean_vector_window = np.zeros((1, p))
+    mean_vector_cement = np.zeros((1, p))
+    mean_vector_brickface = np.zeros((1, p))
+    mean_vector_sky = np.zeros((1, p))
+    mean_vector_foliage = np.zeros((1, p))
+    mean_vector_path = np.zeros((1, p))
+    covar_grass = np.identity((p))
+    covar_window = np.identity((p))
+    covar_cement = np.identity((p))
+    covar_brickface = np.identity((p))
+    covar_sky = np.identity((p))
+    covar_foliage = np.identity((p))
+    covar_path = np.identity((p))
 
     print("ANDAMENTO:", (j * 100) / 300, "%")
 
@@ -109,6 +112,25 @@ for train_index, test_index in rskf.split(shape_view, lmatrix):
             kfold_result[test_index[i],j] = "FOLIAGE"
         elif max(storage) == px_path:
             kfold_result[test_index[i],j] = "PATH"
+
+    cond = 0
+    correct = 0
+    wrong = 0
+
+    for n in range(j):
+        cond = 1           
+        for i in range(2100):
+            if kfold_result[i,n] == "":
+                continue
+            if lmatrix[i] == kfold_result[i,n]:
+                correct += 1
+            else:
+                wrong += 1
+
+    if cond == 1:
+        total = correct + wrong
+        partial_result.append(correct / total) 
+        np.savetxt("q2_bay_shapev.txt", partial_result, fmt="%.6f", delimiter=",")
 
 # K FOLD METRICS
 

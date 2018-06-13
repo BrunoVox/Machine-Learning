@@ -112,9 +112,9 @@ def objective_function():
 c = 7
 p = 10
 
-results_prototypes = np.zeros((700, 10))
+results_prototypes = np.zeros((700, p))
 results_objects = np.zeros((100, 2100))
-results_hyperparameter = np.zeros((100, 10))
+results_hyperparameter = np.zeros((100, p))
 results_ari = np.zeros((100, 1))
 
 euc_distance = euclidean_distances(rgb_view) ** 2

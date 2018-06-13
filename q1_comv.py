@@ -110,11 +110,11 @@ def objective_function():
 # INITIALIZATION
 
 c = 7
-p = 18
+p = 16
 
-results_prototypes = np.zeros((700, 18))
+results_prototypes = np.zeros((700, p))
 results_objects = np.zeros((100, 2100))
-results_hyperparameter = np.zeros((100, 18))
+results_hyperparameter = np.zeros((100, p))
 results_ari = np.zeros((100, 1))
 
 euc_distance = euclidean_distances(complete_view) ** 2

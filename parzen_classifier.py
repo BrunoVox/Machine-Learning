@@ -12,8 +12,8 @@ def parzen_window(x, xi, h):
     pwf = (2 * np.pi) ** (- 1 / 2) * np.exp(-(0.5) * (amostra ** 2))
     return pwf
 
-def parzen_density(pwf_product, h):
-    p = (1 / (210 * (h ** 18))) * pwf_product
+def parzen_density(pwf_product, h, p):
+    p = (1 / (210 * (h ** p))) * pwf_product
     return p
 
 # h = np.array([0.2, 0.6, 1, 1.4, 1.8])
