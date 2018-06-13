@@ -107,18 +107,17 @@ def objective_function():
                 dec += 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, k, i))
     return dec
 
-# def rand_index():
-#     for i in range(c):
-#         for j in range(c):
-
-
 # INITIALIZATION
 
 c = 7
 p = 18
 
+results_prototypes = np.zeros((700, 18))
+results_objects = np.zeros((100, 2100))
+results_hyperparameter = np.zeros((100, 18))
+results_ari = np.zeros((100, 1))
+
 euc_distance = euclidean_distances(complete_view) ** 2
-# euc_distance_adjusted = []
 euc_distance_adjusted = np.tril(euc_distance)
 euc_distance_adjusted = (euc_distance_adjusted).flatten()
 to_delete = []
@@ -129,58 +128,45 @@ euc_distance_adjusted = np.delete(euc_distance_adjusted, to_delete)
 
 percentile_10 = np.percentile(euc_distance_adjusted, 10)
 percentile_90 = np.percentile(euc_distance_adjusted, 90)
-sigma_2 = (percentile_10 + percentile_90) / 2 # tril_indices numpy
+sigma_2 = (percentile_10 + percentile_90) / 2
 gama = (1 / sigma_2) ** p
-hyperparameter_vector = np.ones((p,)) * (gama ** (1 / p))
-
-prototypes_vector = generate_random_prototypes(index_matrix)
-prototypes_matrix = np.zeros((c, p))
-
-for i in range(len(prototypes_vector)):
-    for j in range(p):
-        prototypes_matrix[i, j] = complete_view[int(prototypes_vector[i]), j]
-
-clusters = np.zeros((2100,))
-
-factor_list = np.ravel(np.zeros((7,1)))
-
-for i in range(len(complete_view)):
-    for j in range(c):
-        factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
-    factor_min = np.argmin(factor_list)
-    clusters[i] = factor_min
 
 # PARTE FINAL DO ALGORITMO
 
-test = 1
-old_hyperparameter_vector = 0
+for n in range(0, 2):
+    test = 1
 
-results_prototypes = np.zeros((700, 18))
-results_objects = np.zeros((100,))
-results_hyperparameter = np.zeros((100, 18))
-results_ari = np.zeros((100,))
+    hyperparameter_vector = np.ones((p,)) * (gama ** (1 / p))
+    prototypes_vector = generate_random_prototypes(index_matrix)
+    prototypes_matrix = np.zeros((c, p))
 
-for n in range(100):
+    for i in range(len(prototypes_vector)):
+        for j in range(p):
+            prototypes_matrix[i, j] = complete_view[int(prototypes_vector[i]), j]
+
+    factor_list = np.ravel(np.zeros((7,1)))
+    clusters = np.zeros((2100,))
+    for i in range(len(complete_view)):
+        for j in range(c):
+            factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
+        factor_min = np.argmin(factor_list)
+        clusters[i] = factor_min
+
     count = 0
     while test == 1:
         count += 1
         print("Iteration", count)
         of_old = objective_function()
         print("J:", of_old)
-
+        
         result_prototype_new = prototype_new()
 
         for i in range(c):
             for j in range(p):
-                # print((np.array(result_prototype_new)))
                 prototypes_matrix[i, j] = (np.array(result_prototype_new))[i, 0, j]
-        # print(prototypes_matrix)
-        # CÁLCULO DO HIPERPARÂMETRO
-        produtorio = np.zeros((18,))
-        denominator2 = np.zeros((18,))
 
-        # of = objective_function()
-        # print(of)
+        produtorio = np.zeros((p,))
+        denominator2 = np.zeros((p,))
 
         hp_temp = hyperparameter_new(produtorio, denominator2)
         produtorio = hp_temp[0]
@@ -192,11 +178,6 @@ for n in range(100):
 
         for j in range(p):
             hyperparameter_vector[j] = ((gama ** (1 / p)) * (result_prod ** (1 / p))) / denominator2[j]
-
-        # of = objective_function()
-        # print(of)
-
-        clusters_old = clusters
 
         for i in range(len(complete_view)):
             for j in range(len(prototypes_matrix)):
@@ -216,10 +197,37 @@ for n in range(100):
             score = adjusted_rand_score(kcm_check, clusters)
             print("ARI:", score)
 
-    results_ari[n] = score
-    results_objects[n] = clusters
+    for i in range(n, n + 1):
+        for j in range(2100):
+            results_objects[i, j] = clusters[j]
 
-    for j in range(p):
-        results_hyperparameter[i, j] = hyperparameter_vector[j]
-        for m in range(c):
-            results_prototypes[i + m, j] = prototypes_matrix[m, j]
+    for i in range((n * 7), ((n * 7) + 7)):
+        for j in range(p):
+            if i == (n * 7):
+                results_prototypes[i, j] = prototypes_matrix[0, j]
+            elif i == ((n * 7) + 1):
+                results_prototypes[i, j] = prototypes_matrix[1, j]
+            elif i == ((n * 7) + 2):
+                results_prototypes[i, j] = prototypes_matrix[2, j]
+            elif i == ((n * 7) + 3):
+                results_prototypes[i, j] = prototypes_matrix[3, j]
+            elif i == ((n * 7) + 4):
+                results_prototypes[i, j] = prototypes_matrix[4, j]
+            elif i == ((n * 7) + 5):
+                results_prototypes[i, j] = prototypes_matrix[5, j]
+            elif i == ((n * 7) + 6):
+                results_prototypes[i, j] = prototypes_matrix[6, j]
+
+    for i in range(n, n + 1):
+        for j in range(p):
+            results_hyperparameter[i, j] = hyperparameter_vector[j]
+
+    for i in range(n, n + 1):
+        for j in range(1):
+            results_ari[i, j] = score
+
+    np.savetxt("clusters_q1_comv.txt", results_objects, fmt="%.0f", delimiter=",")
+    np.savetxt("prototypes_q1_comv.txt", results_prototypes, delimiter=",")
+    np.savetxt("hyperparameter_q1_comv.txt", results_hyperparameter, delimiter=",")
+    np.savetxt("ari_q1_comv.txt", results_ari)
+    

@@ -39,8 +39,8 @@ objmatrix = object_matrix(objmatrix, matrix)
 objmatrix = check(objmatrix)
 objmatrix = objmatrix.astype(float)
 complete_view = np.matrix(objmatrix)
-shape_view = np.matrix(matrix)[:,1:9]
-rgb_view = np.matrix(matrix)[:,10:19]
+shape_view = complete_view[:,0:8]
+rgb_view = complete_view[:,8:18]
 index_matrix = np.zeros((2100,))
 for i in range(0, len(complete_view)):
     index_matrix[i] = i
