@@ -133,7 +133,7 @@ gama = (1 / sigma_2) ** p
 
 # PARTE FINAL DO ALGORITMO
 
-for n in range(0, 2):
+for n in range(100):
     test = 1
 
     hyperparameter_vector = np.ones((p,)) * (gama ** (1 / p))
