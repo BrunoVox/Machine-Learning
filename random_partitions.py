@@ -80,31 +80,186 @@ def random_parts():
     # AS COLUNAS 1 E 2 CORRESPONDEM À PARTIÇÃO DE VALIDAÇÃO
     # AS COLUNAS DE 3 A 9 CORRESPONDEM À PARTIÇÃO DE TREINAMENTO
 
-    test_part = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))
 
-    for j in range(1,3):
-        for i in range(0, len(part_matrix)):
-            valid_part[i + (j - 1) * len(part_matrix)] = part_matrix[i, j]
+    test_part = np.zeros((10, 210))
+    valid_part = np.zeros((10, 420))
+    train_part = np.zeros((10, 1470))
+    for i in range(10):
+        for j in range(210):
+            if i == 0:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+                
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
 
-    valid_part = np.ravel(valid_part)
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
 
-    for j in range(3,10):
-        for i in range(0, len(part_matrix)):
-            train_part[i + (j - 3) * len(part_matrix)] = part_matrix[i, j]
+            elif i == 1:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
 
-    train_part = np.ravel(train_part)
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+
+            if i == 2:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+
+            if i == 3:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+
+            if i == 4:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+
+            if i == 5:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+
+            if i == 6:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+
+            if i == 7:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+
+            if i == 8:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,9], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+
+            if i == 9:
+                test_part[i,j] = np.ravel(np.reshape(part_matrix[:,i], (1, 210)))[j]
+
+                valid_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,0], (1, 210)))[j]
+                valid_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+
+                train_part[i,j+0*210] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+                train_part[i,j+1*210] = np.ravel(np.reshape(part_matrix[:,3], (1, 210)))[j]
+                train_part[i,j+2*210] = np.ravel(np.reshape(part_matrix[:,4], (1, 210)))[j]
+                train_part[i,j+3*210] = np.ravel(np.reshape(part_matrix[:,5], (1, 210)))[j]
+                train_part[i,j+4*210] = np.ravel(np.reshape(part_matrix[:,6], (1, 210)))[j]
+                train_part[i,j+5*210] = np.ravel(np.reshape(part_matrix[:,7], (1, 210)))[j]
+                train_part[i,j+6*210] = np.ravel(np.reshape(part_matrix[:,8], (1, 210)))[j]
+            
+            
+
+
+    # valid_part = np.matrix((10, 420))
+    # for i in range(10):
+    #     if i == 0:
+    #         for j in range(210):
+    #             valid_part[1,j] = np.ravel(np.reshape(part_matrix[:,1], (1, 210)))[j]
+    #             valid_part[2,j] = np.ravel(np.reshape(part_matrix[:,2], (1, 210)))[j]
+
+#     valid_part = np.ravel(valid_part)
+
+#     for j in range(3,10):
+#         for i in range(0, len(part_matrix)):
+#             train_part[i + (j - 3) * len(part_matrix)] = part_matrix[i, j]
+
+#     train_part = np.ravel(train_part)
 
     return test_part, valid_part, train_part
 
-# train_parts_bay = []
-# train_parts = []
-# valid_parts = []
-# test_parts = []
+# # train_parts_bay = []
+# # train_parts = []
+# # valid_parts = []
+# # test_parts = []
 
-# for i in range(0, 30):
-#     train_parts_bay = np.hstack()
-#     train_parts.append(random_parts()[2])
-#     valid_parts.append(random_parts()[1])
-#     test_parts.append(random_parts()[0])
+# # for i in range(0, 30):
+# #     train_parts_bay = np.hstack()
+# #     train_parts.append(random_parts()[2])
+# #     valid_parts.append(random_parts()[1])
+# #     test_parts.append(random_parts()[0])
 
-# print(train_parts_bay)
+# # print(train_parts_bay)
+
+# a = random_parts()
+
+# print(a[0])
+# print(np.shape(a[0]))

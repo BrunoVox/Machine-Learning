@@ -1,8 +1,16 @@
 import random
 import numpy as np
 
-a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# a = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+# aux = a
 
-b = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+# b = [1, 2]
 
-print(np.correlate(a, b))
+# for i in range(len(b)):
+#     aux.remove(b[i])
+# random.shuffle(aux)
+# print(aux)
+lista = [1,2]
+x = (np.matrix([[lista,2],[5,6]]))
+
+print((x[0,0])[0])
