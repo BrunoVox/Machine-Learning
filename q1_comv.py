@@ -116,6 +116,7 @@ results_prototypes = np.zeros((700, p))
 results_objects = np.zeros((100, 2100))
 results_hyperparameter = np.zeros((100, p))
 results_ari = np.zeros((100, 1))
+results_of = np.zeros((100, 1))
 
 euc_distance = euclidean_distances(complete_view) ** 2
 euc_distance_adjusted = np.tril(euc_distance)
@@ -151,6 +152,8 @@ for n in range(100):
             factor_list[j] = 2 * (1 - kernel_gh(hyperparameter_vector, complete_view, prototypes_matrix, i, j))
         factor_min = np.argmin(factor_list)
         clusters[i] = factor_min
+
+    clusters_old = clusters
 
     count = 0
     while test == 1:
@@ -193,7 +196,15 @@ for n in range(100):
         if of != of_old:
             test = 1
 
-        if of == of_old:
+        check = 1
+
+        for i in range(len(clusters)):
+            if clusters[i] != clusters_old[i]:
+                check = 0
+                break
+
+        if of == of_old or check == 1:
+            of_final = of
             score = adjusted_rand_score(kcm_check, clusters)
             print("ARI:", score)
 
@@ -226,8 +237,13 @@ for n in range(100):
         for j in range(1):
             results_ari[i, j] = score
 
+    for i in range(n, n + 1):
+        for j in range(1):
+            results_of[i, j] = of_final
+
     np.savetxt("clusters_q1_comv.txt", results_objects, fmt="%.0f", delimiter=",")
     np.savetxt("prototypes_q1_comv.txt", results_prototypes, delimiter=",")
     np.savetxt("hyperparameter_q1_comv.txt", results_hyperparameter, delimiter=",")
     np.savetxt("ari_q1_comv.txt", results_ari)
+    np.savetxt("of_q1_comv.txt", results_of)
     
