@@ -82,7 +82,7 @@ for n in range(30):
         # h = [6.8, 7, 7.2, 7.4, 7.6]
         h = [7, 7.2]
 
-        for hi in range(0, 5):    
+        for hi in range(0, 2):    
             hx = h[hi]
             for i in range(0, len(valid_part)):
                 p_grass = 0
